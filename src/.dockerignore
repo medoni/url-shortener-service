@@ -1,0 +1,31 @@
+# dotnet
+**/obj/
+**/bin/
+
+# visual studio (code)
+**/.vscode/
+**/.vs/
+**/*.user
+**/*.suo
+**/*.cache
+**/*.log
+**/*.vspscc
+**/*.lck
+**/*.ldb
+**/*.bak
+**/*.userosscache
+**/*.sln.docstates
+
+# NuGet packages
+**/*.nupkg
+**/packages/*
+
+# Windows-based files
+**/Thumbs.db
+**/ehthumbs.db
+
+# macOS-based files
+**/.DS_Store
+
+# terraform
+**/.terraform
