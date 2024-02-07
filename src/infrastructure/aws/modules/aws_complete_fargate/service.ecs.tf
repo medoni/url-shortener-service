@@ -47,28 +47,6 @@ resource "aws_ecs_service" "ecs_service" {
     security_groups  = [aws_security_group.ecs_security_group.id]
     assign_public_ip = true
   }
-}
 
-resource "aws_vpc" "ecs_vpc" {
-  cidr_block = "10.0.0.0/16"
-}
-
-resource "aws_subnet" "ecs_subnet_ids" {
-  count = 2
-
-  cidr_block = "10.0.${count.index + 1}.0/24"
-  vpc_id     = aws_vpc.ecs_vpc.id
-}
-
-resource "aws_security_group" "ecs_security_group" {
-  name        = "${var.project-name-short}-${var.short-env-name}-security-group"
-  description = "Allow inbound traffic on port 80"
-  vpc_id      = "${aws_vpc.ecs_vpc.id}"
-
-  ingress {
-    from_port = 80
-    to_port   = 8080
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # depends_on = [aws_lb_listener.fargate_lb_listener]
 }
