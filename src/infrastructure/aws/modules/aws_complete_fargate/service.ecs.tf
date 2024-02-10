@@ -50,7 +50,7 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.ecs_lb_tg.arn
+    target_group_arn = var.alb.default_target_group.arn
     container_name   = var.docker-image
     container_port   = var.container-port
   }

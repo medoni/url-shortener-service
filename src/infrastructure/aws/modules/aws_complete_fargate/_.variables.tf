@@ -46,3 +46,11 @@ variable "vpc" {
   })
   description = "vpc settings"
 }
+
+variable "alb" {
+  type = object({
+    alb_id               = string
+    target_groups        = map(any)
+    default_target_group = any
+  })
+}
