@@ -17,7 +17,13 @@ module "url-shortener-service" {
     short = "ec1"
   }
 
-  uss-docker-image = "url-shortener-service-latest"
+  docker = {
+    image_name = "url-shortener-service-latest"
+    build = {
+      context    = "../../../../"
+      dockerfile = "deployables/UrlShortenerService/Dockerfile"
+    }
+  }
 
   default_tags = var.default_tags
 }

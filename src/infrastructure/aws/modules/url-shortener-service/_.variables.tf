@@ -22,9 +22,15 @@ variable "region" {
   description = "Information about the region"
 }
 
-variable "uss-docker-image" {
-  type        = string
-  description = "url-shortener-service docker image including version"
+variable "docker" {
+  type = object({
+    image_name = string
+    build = object({
+      context = string
+      dockerfile = string  
+    })
+  })
+  description = "Information about the used docker"
 }
 
 variable "default_tags" {
