@@ -18,6 +18,11 @@ variable "docker-image" {
   description = "docker-image"
 }
 
+variable "container-port" {
+  type = number
+  description = "container-port"
+}
+
 variable "docker-build-context" {
   type = string
   description = "docker-build-context"
@@ -26,4 +31,18 @@ variable "docker-build-context" {
 variable "docker-build-dockerfile" {
   type = string
   description = "docker-build-dockerfile"
+}
+
+variable "health-check-path" {
+  type = string
+  description = "health-check-path"
+}
+
+variable "vpc" {
+  type = object({
+    vpc_id            = string
+    subnet_ids        = list(string)
+    security_group_id = string
+  })
+  description = "vpc settings"
 }

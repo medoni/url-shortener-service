@@ -13,10 +13,10 @@ resource "aws_ecs_task_definition" "ecs_task" {
 
   container_definitions = jsonencode([{
     name  = var.docker-image
-    image = aws_ecr_repository.ecr_repository.repository_url
+    image = "${aws_ecr_repository.ecr_repository.repository_url}/${var.docker-image}"
     portMappings = [{
-      containerPort = 8080,
-      hostPort      = 8080,
+      containerPort = var.container-port,
+      hostPort      = var.container-port
     }]
   }])
 }
@@ -41,12 +41,23 @@ resource "aws_ecs_service" "ecs_service" {
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.ecs_task.arn
   launch_type     = "FARGATE"
+  desired_count   = 1
 
   network_configuration {
-    subnets          = aws_subnet.ecs_subnet_ids[*].id
-    security_groups  = [aws_security_group.ecs_security_group.id]
+    subnets          = var.vpc.subnet_ids
+    security_groups  = [var.vpc.security_group_id]
     assign_public_ip = true
   }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.ecs_lb_tg.arn
+    container_name   = var.docker-image
+    container_port   = var.container-port
+  }
+
+  # lifecycle {
+  #   ignore_changes = [task_definition, desired_count]
+  # }
 
   # depends_on = [aws_lb_listener.fargate_lb_listener]
 }
