@@ -29,6 +29,10 @@ variable "docker" {
       context = string
       dockerfile = string  
     })
+    container = object({
+      name = string
+      port = number
+    })
   })
   description = "Information about the used docker"
 }

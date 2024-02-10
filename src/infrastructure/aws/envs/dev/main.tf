@@ -23,6 +23,10 @@ module "url-shortener-service" {
       context    = "../../../../"
       dockerfile = "deployables/UrlShortenerService/Dockerfile"
     }
+    container = {
+      name = "url-shortener-service"
+      port = 8080
+    }
   }
 
   default_tags = var.default_tags

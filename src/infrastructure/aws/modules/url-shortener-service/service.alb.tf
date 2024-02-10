@@ -9,7 +9,7 @@ module "alb" {
   security_group_ingress_rules = {
     all_http = {
       from_port   = 80
-      to_port     = 80
+      to_port     = var.docker.container.port
       ip_protocol = "tcp"
       description = "HTTP web traffic"
       cidr_ipv4   = "0.0.0.0/0"
@@ -59,11 +59,14 @@ module "alb" {
 
   target_groups = {
     ecs_fargate = {
-      target_id        = "arn:aws:ecs:eu-central-1:730335564775:cluster/uss-d-ecs-fargate"
       name_prefix      = "h1"
       protocol         = "HTTP"
-      port             = 80
-      target_type      = "instance"
+      port             = var.docker.container.port
+      target_type      = "ip"
+
+      # Theres nothing to attach here in this definition. Instead,
+      # ECS will attach the IPs of the tasks to this target group
+      create_attachment = false
     }
   }
 
