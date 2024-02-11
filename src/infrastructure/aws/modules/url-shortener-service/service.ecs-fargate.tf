@@ -31,9 +31,9 @@ module "ecs_cluster" {
           essential = true
           image     = "${module.ecr.repository_url}/${var.docker.image_name}"
 
-          # health_check = {
-          #   command = ["CMD-SHELL", "curl -f http://localhost:${local.container_port}/health || exit 1"]
-          # }
+          health_check = {
+            command = ["CMD-SHELL", "curl -f http://localhost:${var.docker.container.port}/ || exit 1"]
+          }
 
           port_mappings = [
             {
