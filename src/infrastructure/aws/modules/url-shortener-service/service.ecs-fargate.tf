@@ -43,6 +43,9 @@ module "ecs_cluster" {
               protocol      = "tcp"
             }
           ]
+
+          readonly_root_filesystem = false
+          enable_cloudwatch_logging = true
         }
       }
 
@@ -86,6 +89,10 @@ module "ecs_cluster" {
       }
     }
   }
+
+  depends_on = [
+    "module.ecr"
+  ]
 
   tags = var.default_tags
 }
