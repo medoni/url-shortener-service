@@ -34,7 +34,7 @@ module "ecs_cluster" {
           readonly_root_filesystem = false
 
           health_check = {
-            command = ["CMD-SHELL", "curl -f http://localhost:${var.docker.container.port}/swagger/index.html || exit 1"]
+            command = ["CMD-SHELL", "curl -f http://localhost:${var.docker.container.port}${var.health_check.url} || exit 1"]
           }
 
           port_mappings = [

@@ -42,3 +42,10 @@ variable "default_tags" {
   type        = map(string)
   description = "Used for tagging resources"
 }
+
+variable "health_check" {
+  type        = object({
+    url = string
+  })
+  description = "Information about automatically health checking"
+}

@@ -17,6 +17,10 @@ module "url-shortener-service" {
     short = "ec1"
   }
 
+  health_check = {
+    url = "/swagger/index.html"
+  }
+
   docker = {
     image_name = "url-shortener-service"
     image_tag  = var.docker_image_tag 

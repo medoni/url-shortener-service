@@ -71,7 +71,7 @@ module "alb" {
       health_check = {
         enabled             = true
         interval            = 30
-        path                = "/Swagger/index.html" # todo:
+        path                = var.health_check.url
         port                = "traffic-port"
         healthy_threshold   = 3
         unhealthy_threshold = 3
