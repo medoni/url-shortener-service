@@ -33,4 +33,4 @@ jobs:
         run: docker compose -f docker-compose.yaml -f docker-compose.backend.yaml --progress=plain up -d --force-recreate --build
 
       - name: Check Swagger
-        run: curl --fail -v http://localhost:8080/swagger/index.html
+        run: curl --fail --retry 5 --retry-max-time 120 -v http://localhost:8080/swagger/index.html
