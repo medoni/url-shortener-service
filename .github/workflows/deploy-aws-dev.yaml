@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - stories/initial-setup
   workflow_dispatch:
     branches:
       - master
