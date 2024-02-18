@@ -4,7 +4,7 @@ module "alb" {
 
   name    = "${var.project.name}-${var.env.short}-alb"
   vpc_id  = module.aws_vpc.vpc_id
-  subnets = module.aws_vpc.private_subnets
+  subnets = module.aws_vpc.public_subnets
 
   security_group_ingress_rules = {
     all_http = {
@@ -67,6 +67,18 @@ module "alb" {
       # Theres nothing to attach here in this definition. Instead,
       # ECS will attach the IPs of the tasks to this target group
       create_attachment = false
+
+      health_check = {
+        enabled             = true
+        interval            = 30
+        path                = "/Swagger/index.html" # todo:
+        port                = "traffic-port"
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+        timeout             = 6
+        protocol            = "HTTP"
+        matcher             = "200-399"
+      }
     }
   }
 
