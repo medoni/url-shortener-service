@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Prerequisites
-        run: apt-get install unzip
+        run: snap install terraform --classic
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
