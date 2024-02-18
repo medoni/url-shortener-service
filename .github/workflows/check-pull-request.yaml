@@ -22,7 +22,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: src/infrastructure/aws/envs/dev
-        run: terraform init -no-color
+        run: terraform init -no-color -backend=false
 
       - name: Terraform Validate
         working-directory: src/infrastructure/aws/envs/dev
