@@ -1,5 +1,5 @@
 resource "docker_image" "docker_image" {
-  name          = "${module.ecr.repository_url}:${var.project.short}-${var.env.short}-image-latest"
+  name          = "${module.ecr.repository_url}:${var.docker.image_tag}"
 
   build {
     context    = var.docker.build.context
@@ -16,4 +16,5 @@ resource "docker_image" "docker_image" {
 
 resource "docker_registry_image" "docker_registry_image" {
   name = docker_image.docker_image.name
+  keep_remotely = true
 }

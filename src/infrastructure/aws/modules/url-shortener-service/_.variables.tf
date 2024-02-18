@@ -25,6 +25,7 @@ variable "region" {
 variable "docker" {
   type = object({
     image_name = string
+    image_tag = string
     build = object({
       context = string
       dockerfile = string  

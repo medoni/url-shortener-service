@@ -29,10 +29,12 @@ module "ecs_cluster" {
           cpu       = 256
           memory    = 512
           essential = true
-          image     = "${module.ecr.repository_url}/${var.docker.image_name}"
+          image     = "${module.ecr.repository_url}:${var.docker.image_tag}"
+
+          readonly_root_filesystem = false
 
           health_check = {
-            command = ["CMD-SHELL", "curl -f http://localhost:${var.docker.container.port}/ || exit 1"]
+            command = ["CMD-SHELL", "curl -f http://localhost:${var.docker.container.port}/swagger/index.html || exit 1"]
           }
 
           port_mappings = [
@@ -46,6 +48,13 @@ module "ecs_cluster" {
 
           readonly_root_filesystem = false
           enable_cloudwatch_logging = true
+
+          environment = [
+            # { 
+            #   name = "COREHOST_TRACE"
+            #   value = "1"
+            # }
+          ]
         }
       }
 
@@ -91,7 +100,8 @@ module "ecs_cluster" {
   }
 
   depends_on = [
-    "module.ecr"
+    module.ecr,
+    docker_image.docker_image
   ]
 
   tags = var.default_tags

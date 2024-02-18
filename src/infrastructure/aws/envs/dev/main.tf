@@ -18,14 +18,15 @@ module "url-shortener-service" {
   }
 
   docker = {
-    image_name = "url-shortener-service-latest"
+    image_name = "url-shortener-service"
+    image_tag  = var.docker_image_tag 
     build = {
       context    = "../../../../"
       dockerfile = "deployables/UrlShortenerService/Dockerfile"
     }
     container = {
       name = "url-shortener-service"
-      port = 8080
+      port = 80
     }
   }
 

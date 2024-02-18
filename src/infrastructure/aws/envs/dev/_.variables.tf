@@ -8,3 +8,8 @@ variable "default_tags" {
     "Environment" = "dev"
   }
 }
+
+variable "docker_image_tag" {
+  type = string
+  description = "docker_image_tag"
+}
