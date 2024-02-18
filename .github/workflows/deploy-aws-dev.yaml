@@ -1,4 +1,4 @@
-name: Terraform aws dev deployment
+name: Deployment Url-Shortener-Service on dev@aws
 
 on:
   push:
@@ -11,10 +11,9 @@ on:
 
 permissions:
   contents: read
-  #issues: write
 
 jobs:
-  uss-deploy:
+  Deploy-Url-Shortener-Service:
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -47,7 +46,7 @@ jobs:
         working-directory: src/infrastructure/aws/envs/dev
         run: terraform apply -auto-approve -input=false -no-color -target module.url-shortener-service.module.ecr "-var=docker_image_tag=v${{ github.run_number }}"
 
-      - name: Terraform Apply other modules
+      - name: Terraform Apply
         working-directory: src/infrastructure/aws/envs/dev
         run: terraform apply -auto-approve -input=false -no-color "-var=docker_image_tag=v${{ github.run_number }}"
 
