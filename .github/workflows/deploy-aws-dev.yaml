@@ -30,7 +30,7 @@ jobs:
           aws-region: eu-central-1 
 
       - name: Setup Terraform
-        uses: actions/checkout@
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.6.6"
 
