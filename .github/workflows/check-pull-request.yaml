@@ -5,33 +5,30 @@ on: [pull_request]
 permissions:
   contents: read
 
-jobs:
-  Check-Url-Shortener-Service:
-    runs-on: ubuntu-latest
-    using: 'composite'
-    environment: dev
-    steps:
-      - name: Checkout Git Repository
-        uses: actions/checkout@v3.0.0
-        with:
-          fetch-depth: 0
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Git Repository
+      uses: actions/checkout@v3.0.0
+      with:
+        fetch-depth: 0
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.6.6"
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.6.6"
 
-      - name: Terraform Init
-        working-directory: src/infrastructure/aws/envs/dev
-        run: terraform init -no-color -backend=false
+    - name: Terraform Init
+      working-directory: src/infrastructure/aws/envs/dev
+      run: terraform init -no-color -backend=false
 
-      - name: Terraform Validate
-        working-directory: src/infrastructure/aws/envs/dev
-        run: terraform validate
+    - name: Terraform Validate
+      working-directory: src/infrastructure/aws/envs/dev
+      run: terraform validate
 
-      - name: Docker Compose Up
-        working-directory: src
-        run: docker compose -f docker-compose.yaml -f docker-compose.backend.yaml --progress=plain up -d --force-recreate --build
+    - name: Docker Compose Up
+      working-directory: src
+      run: docker compose -f docker-compose.yaml -f docker-compose.backend.yaml --progress=plain up -d --force-recreate --build
 
-      - name: Check Swagger
-        run: curl --fail --retry 5 --retry-max-time 120 --retry-delay 5 -v http://localhost:8080/swagger/index.html
+    - name: Check Swagger
+      run: curl --fail --retry 5 --retry-max-time 120 --retry-delay 5 -v http://localhost:8080/swagger/index.html
