@@ -21,5 +21,6 @@ $env:AWS_PROFILE = 'YOUR AWS PROFILE IN ~/.aws/credentials'
 cd envs/dev
 $env:AWS_PROFILE='YOUR AWS PROFILE IN ~/.aws/credentials'
 tf init
+tf apply -target module.url-shortener-service.module.ecr
 tf apply
 ```

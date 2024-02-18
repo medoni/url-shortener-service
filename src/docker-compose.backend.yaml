@@ -4,3 +4,5 @@ services:
     build:
       context: .
       dockerfile: deployables/UrlShortenerService/Dockerfile
+    ports:
+      - "8080:80"
