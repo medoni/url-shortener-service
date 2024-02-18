@@ -43,12 +43,12 @@ jobs:
         working-directory: src/infrastructure/aws/envs/dev
         run: terraform validate
 
-      - name: Terraform Plan
+      - name: Terraform Apply ECR
         working-directory: src/infrastructure/aws/envs/dev
-        run: terraform plan -out=tfplan.json
+        run: terraform apply -auto-approve -input=false -no-color -target module.url-shortener-service.module.ecr "-var=docker_image_tag=v${{ github.run_number }}"
 
-      - name: Terraform Apply
+      - name: Terraform Apply other modules
         working-directory: src/infrastructure/aws/envs/dev
-        run: terraform apply -auto-approve tfplan.json
+        run: terraform apply -auto-approve -input=false -no-color "-var=docker_image_tag=v${{ github.run_number }}"
 
 
