@@ -17,9 +17,6 @@ jobs:
   uss-deploy:
     runs-on: ubuntu-latest
     environment: dev
-    defaults:
-      run:
-        working-directory: ./src/infrastructure/aws/envs/dev
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3.0.0
@@ -39,16 +36,19 @@ jobs:
           terraform_version: "1.6.6"
 
       - name: Terraform Init
-        working-directory: 
+        working-directory: src/infrastructure/aws/envs/dev
         run: terraform init -no-color
 
       - name: Terraform Validate
+        working-directory: src/infrastructure/aws/envs/dev
         run: terraform validate
 
       - name: Terraform Plan
+        working-directory: src/infrastructure/aws/envs/dev
         run: terraform plan -out=tfplan.json
 
       - name: Terraform Apply
+        working-directory: src/infrastructure/aws/envs/dev
         run: terraform apply -auto-approve tfplan.json
 
 
