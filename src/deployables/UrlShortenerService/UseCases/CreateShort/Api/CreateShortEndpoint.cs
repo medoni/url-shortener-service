@@ -24,7 +24,7 @@ public class CreateShortEndpoint : Endpoint<CreateShortRequestDto, CreateShortRe
             Guid.NewGuid(),
             req.Title,
             req.Description,
-            req.Title
+            req.RedirectTo
         );
 
         await _shortRepository.AddAsync(entity);
