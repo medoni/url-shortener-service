@@ -1,28 +1,29 @@
 ﻿namespace UrlShortenerService.Domain.Short;
 
-public class ShortAggregate
+public class ShortAggregate : IAggregateRootWithPersistenceState<ShortAggregateState>
 {
-    private readonly ShortAggregateState State;
+    private readonly ShortAggregateState Persistence;
+    ShortAggregateState IAggregateRootWithPersistenceState<ShortAggregateState>.Persistence => Persistence;
 
     public Guid Id
     {
-        get => State.Id;
-        private set => State.Id = value;
+        get => Persistence.Id;
+        private set => Persistence.Id = value;
     }
     public string Title
     {
-        get => State.Title;
-        private set => State.Title = value;
+        get => Persistence.Title;
+        private set => Persistence.Title = value;
     }
     public string Description
     {
-        get => State.Description;
-        private set => State.Description = value;
+        get => Persistence.Description;
+        private set => Persistence.Description = value;
     }
     public string RedirectTo
     {
-        get => State.RedirectTo;
-        private set => State.RedirectTo = value;
+        get => Persistence.RedirectTo;
+        private set => Persistence.RedirectTo = value;
     }
 
     public ShortAggregate(
@@ -36,7 +37,7 @@ public class ShortAggregate
         if (string.IsNullOrEmpty(description)) throw new ArgumentException($"'{nameof(description)}' cannot be null or empty.", nameof(description));
         if (string.IsNullOrEmpty(redirectTo)) throw new ArgumentException($"'{nameof(redirectTo)}' cannot be null or empty.", nameof(redirectTo));
 
-        State = new ShortAggregateState(
+        Persistence = new ShortAggregateState(
             id,
             title,
             description,
@@ -48,6 +49,6 @@ public class ShortAggregate
         ShortAggregateState state
     )
     {
-        State = state ?? throw new ArgumentNullException(nameof(state));
+        Persistence = state ?? throw new ArgumentNullException(nameof(state));
     }
 }
