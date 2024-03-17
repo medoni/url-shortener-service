@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using System.Net.Http.Headers;
 using UrlShortenerService.Domain.Short;
 
 namespace UrlShortenerService.UseCases.GetShort.Api;
@@ -22,9 +23,48 @@ public class GetShortEndpoint : Endpoint<GetShortRequest, GetShortResponse>
     {
         var entity = await _shortRepository.GetByIdAsync(req.Id);
 
-        await SendAsync(
-            new GetShortResponse(entity),
-            StatusCodes.Status200OK
+        await SendAsyncByAcceptAsync(
+            req,
+            new()
+            {
+                ["text/html"] = async () =>
+                {
+                    await SendRedirectAsync(
+                        entity.RedirectTo,
+                        allowRemoteRedirects: true
+                    );
+                },
+                ["application/json"] = async () =>
+                {
+                    var responseDto = entity.ToResponseDto();
+                    await SendAsync(
+                        responseDto,
+                        StatusCodes.Status200OK
+                    );
+                }
+            }
         );
+    }
+
+    private Task SendAsyncByAcceptAsync(
+        GetShortRequest req,
+        Dictionary<string, Func<Task>> sendByAccept
+    )
+    {
+        var defaultAction = sendByAccept.First().Value;
+        if (req.AcceptHeaders is null) return defaultAction.Invoke();
+
+        foreach (var acceptHeader in req.AcceptHeaders)
+        {
+            if (!MediaTypeWithQualityHeaderValue.TryParse(acceptHeader, out var parsedMediaValue)) continue;
+            if (parsedMediaValue.MediaType is null) continue;
+
+            if (sendByAccept.TryGetValue(parsedMediaValue.MediaType, out var foundAction))
+            {
+                return foundAction.Invoke();
+            }
+        }
+
+        return defaultAction.Invoke();
     }
 }

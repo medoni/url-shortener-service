@@ -1,6 +1,4 @@
-﻿using UrlShortenerService.Domain.Short;
-
-namespace UrlShortenerService.UseCases.GetShort.Api;
+﻿namespace UrlShortenerService.UseCases.GetShort.Api;
 
 public record GetShortResponse(
     Guid Id,
@@ -9,15 +7,4 @@ public record GetShortResponse(
     string RedirectTo
 )
 {
-    public GetShortResponse(
-        ShortAggregate entity
-    )
-    : this(
-        entity.Id,
-        entity.Title,
-        entity.Description,
-        entity.RedirectTo
-    )
-    {
-    }
 }

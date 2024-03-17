@@ -8,8 +8,8 @@ using UrlShortenerService.UseCases.CreateShort.Api;
 namespace UrlShortenerService.IntegrationTests.UsesCases.CreateShort;
 
 [TestFixture]
-[Category("Unit")]
-public class CreateShortFixtureTests
+[Category("Integration")]
+public class CreateShortFixture
 {
     [Test]
     public async Task CreateShort_Should_Persist_Data()
@@ -37,7 +37,7 @@ public class CreateShortFixtureTests
         // assert
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
 
-        var shortAggregate = await GetShortAggregateByResponse<CreateShortResponseDto>(
+        var shortAggregate = await GetShortAggregateByResponseAsync<CreateShortResponseDto>(
             response,
             json => json.Id
         );
@@ -51,7 +51,7 @@ public class CreateShortFixtureTests
         );
     }
 
-    private async Task<ShortAggregate> GetShortAggregateByResponse<TJsonResponse>(
+    private async Task<ShortAggregate> GetShortAggregateByResponseAsync<TJsonResponse>(
         HttpResponseMessage response,
         Func<TJsonResponse, Guid> idExtractor
     )
