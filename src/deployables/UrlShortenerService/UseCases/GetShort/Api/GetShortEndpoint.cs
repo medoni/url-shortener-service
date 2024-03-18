@@ -1,16 +1,22 @@
 ﻿using FastEndpoints;
 using System.Net.Http.Headers;
 using UrlShortenerService.Domain.Short;
+using UrlShortenerService.Domain.ShortStat;
 
 namespace UrlShortenerService.UseCases.GetShort.Api;
 
 public class GetShortEndpoint : Endpoint<GetShortRequest, GetShortResponse>
 {
     private readonly IShortRepository _shortRepository;
+    private readonly IShortVisitRepository _shortStatRepository;
 
-    public GetShortEndpoint(IShortRepository shortRepository)
+    public GetShortEndpoint(
+        IShortRepository shortRepository,
+        IShortVisitRepository shortStatRepository
+    )
     {
         _shortRepository = shortRepository ?? throw new ArgumentNullException(nameof(shortRepository));
+        _shortStatRepository = shortStatRepository ?? throw new ArgumentNullException(nameof(shortStatRepository));
     }
 
     public override void Configure()
@@ -48,6 +54,8 @@ public class GetShortEndpoint : Endpoint<GetShortRequest, GetShortResponse>
             {
                 ["text/html"] = async () =>
                 {
+                    await RecordVisitAsync(entity);
+
                     await SendRedirectAsync(
                         entity.RedirectTo,
                         allowRemoteRedirects: true
@@ -85,5 +93,22 @@ public class GetShortEndpoint : Endpoint<GetShortRequest, GetShortResponse>
         }
 
         return defaultAction.Invoke();
+    }
+
+    private async Task RecordVisitAsync(
+        ShortAggregate shortAggregate
+    )
+    {
+        var httpRequest = HttpContext.Request;
+
+        var visit = new ShortVisitEntity(
+            Guid.NewGuid(),
+            shortAggregate.Id,
+            shortAggregate.RedirectTo,
+            DateTimeOffset.UtcNow,
+            httpRequest.Headers["Referrer"].FirstOrDefault(),
+            httpRequest.Headers["User-Agent"].FirstOrDefault()
+        );
+        await _shortStatRepository.AddAsync(visit);
     }
 }

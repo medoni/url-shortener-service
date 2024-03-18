@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using UrlShortenerService.Domain.Short;
+using UrlShortenerService.Domain.ShortStat;
 using UrlShortenerService.UseCases.GetShort.Api;
 
 namespace UrlShortenerService.IntegrationTests.UsesCases.GetShort;
@@ -42,6 +43,10 @@ public class GetShortFixture
             response.Headers.Select(x => (x.Key, x.Value.First())),
             Has.Some.EqualTo(("Location", "http://example.com/"))
         );
+        Assert.That(
+            await GetVisitCountFromShortAsync(shortAggregate.Id),
+            Is.EqualTo(1)
+        );
     }
 
     [Test]
@@ -76,6 +81,10 @@ public class GetShortFixture
                 .And.Property(nameof(responseDto.Description)).EqualTo("Bar")
                 .And.Property(nameof(responseDto.RedirectTo)).EqualTo("http://example.com")
         );
+        Assert.That(
+            await GetVisitCountFromShortAsync(shortAggregate.Id),
+            Is.EqualTo(0)
+        );
     }
 
     private async Task CreateAndPersistShortAsync(
@@ -87,5 +96,14 @@ public class GetShortFixture
 
         var shortAggregate = createShortFn();
         await repo.AddAsync(shortAggregate);
+    }
+
+    private async Task<long> GetVisitCountFromShortAsync(Guid id)
+    {
+        using var scopedSvcp = TestEnvironment.Services.CreateScope();
+        var repo = scopedSvcp.ServiceProvider.GetRequiredService<IShortVisitRepository>();
+
+        var visitStats = await repo.GetTotalVisitStatsAsync(id);
+        return visitStats.TotalCount;
     }
 }

@@ -9,11 +9,11 @@ public record GetShortStatsResponse(
 )
 {
     public GetShortStatsResponse(
-        ShortStatAggregate entity
+        ShortVisitEntity entity
     ) : this(
         entity.Id,
-        entity.VisitTotalCount,
-        entity.Visit24Hours
+        0,
+        0
     )
     {
     }

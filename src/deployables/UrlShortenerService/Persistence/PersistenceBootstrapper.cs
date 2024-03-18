@@ -20,7 +20,7 @@ public static class PersistenceBootstrapper
 
     public static IServiceCollection AddShortStatsPersistence(
         this IServiceCollection services,
-        Action<IShortStatsPersistenceOptionsBuilder> optionsBuilder
+        Action<IShortVisitsPersistenceOptionsBuilder> optionsBuilder
     )
     {
         var statOptionsBuilder = new ShortStatsPersistenceOptionsBuilder(
@@ -44,7 +44,7 @@ public static class PersistenceBootstrapper
         }
     }
 
-    private class ShortStatsPersistenceOptionsBuilder : IShortStatsPersistenceOptionsBuilder
+    private class ShortStatsPersistenceOptionsBuilder : IShortVisitsPersistenceOptionsBuilder
     {
         private readonly IServiceCollection _services;
 

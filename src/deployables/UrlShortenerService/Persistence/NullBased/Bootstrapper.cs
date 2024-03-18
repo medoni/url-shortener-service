@@ -5,11 +5,11 @@ namespace UrlShortenerService.Persistence.NullBased;
 
 public static class Bootstrapper
 {
-    public static IShortStatsPersistenceOptionsBuilder AddNullBased(
-        this IShortStatsPersistenceOptionsBuilder builder
+    public static IShortVisitsPersistenceOptionsBuilder AddNullBased(
+        this IShortVisitsPersistenceOptionsBuilder builder
     )
     {
-        builder.Services.AddScoped<IShortStatRepository, ShortStatNullBasedRepository>();
+        builder.Services.AddScoped<IShortVisitRepository, ShortStatNullBasedRepository>();
 
         return builder;
     }

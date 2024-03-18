@@ -2,7 +2,8 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using UrlShortenerService.Persistence;
 using UrlShortenerService.Persistence.FileBased;
-using UrlShortenerService.Persistence.NullBased;
+using UrlShortenerService.Services.ShortVisitClassifier;
+using UrlShortenerService.Services.ShortVisitStatsCalculator;
 using UrlShortenerService.UseCases;
 
 namespace UrlShortenerService;
@@ -26,12 +27,14 @@ public class Program
                 opt => opt.AddFileBased(fileBasedOpt => builder.Configuration.Bind("UrlShortenerService:Persistence:Shorts:FileBasedPersistence", fileBasedOpt))
             )
             .AddShortStatsPersistence(
-                opt => opt.AddNullBased()
+                opt => opt.AddFileBased(fileBasedOpt => builder.Configuration.Bind("UrlShortenerService:Persistence:ShortVisits:FileBasedPersistence", fileBasedOpt))
             );
 
         builder.Services
             .AddFastEndpoints()
             .AddUseCases()
+            .AddShortVisitClassifier()
+            .AddShortVisitStatsCalculator()
         ;
 
         var app = builder.Build();

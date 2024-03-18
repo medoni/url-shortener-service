@@ -5,9 +5,9 @@ namespace UrlShortenerService.UseCases.GetShortStats.Api;
 
 public class GetShortStatsEndpoint : Endpoint<GetShortStatsRequest, GetShortStatsResponse>
 {
-    private readonly IShortStatRepository _shortStatRepository;
+    private readonly IShortVisitRepository _shortStatRepository;
 
-    public GetShortStatsEndpoint(IShortStatRepository shortStatRepository)
+    public GetShortStatsEndpoint(IShortVisitRepository shortStatRepository)
     {
         _shortStatRepository = shortStatRepository ?? throw new ArgumentNullException(nameof(shortStatRepository));
     }
@@ -18,13 +18,8 @@ public class GetShortStatsEndpoint : Endpoint<GetShortStatsRequest, GetShortStat
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(GetShortStatsRequest req, CancellationToken ct)
+    public override Task HandleAsync(GetShortStatsRequest req, CancellationToken ct)
     {
-        var entity = await _shortStatRepository.GetByIdAsync(req.Id);
-
-        await SendAsync(
-            new GetShortStatsResponse(entity),
-            StatusCodes.Status200OK
-        );
+        throw new NotImplementedException();
     }
 }

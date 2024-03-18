@@ -21,7 +21,8 @@ public class TestEnvironment
     public async Task TearDown()
     {
         var filesAndFolderToCleanUp = new[] {
-            ApplicationFactory.Services.GetRequiredService<IOptions<StatsFileBasedPersistenceOptions>>().Value.Location
+            ApplicationFactory.Services.GetRequiredService<IOptions<StatsFileBasedPersistenceOptions>>().Value.Location,
+            ApplicationFactory.Services.GetRequiredService<IOptions<ShortVisitFileBasedPersistenceOptions>>().Value.Location
         };
 
         await ApplicationFactory.DisposeAsync();

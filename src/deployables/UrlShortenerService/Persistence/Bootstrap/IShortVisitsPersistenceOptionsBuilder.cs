@@ -1,6 +1,6 @@
 ﻿namespace UrlShortenerService.Persistence.Bootstrap;
 
-public interface IShortStatsPersistenceOptionsBuilder
+public interface IShortVisitsPersistenceOptionsBuilder
 {
     IServiceCollection Services { get; }
 }
