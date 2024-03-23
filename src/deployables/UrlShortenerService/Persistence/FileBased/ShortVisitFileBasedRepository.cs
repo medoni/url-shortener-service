@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Retry;
 using System.Text.Json;
 using UrlShortenerService.Domain.ShortStat;
 using UrlShortenerService.Domain.ShortVisit;
@@ -56,19 +58,27 @@ public class ShortVisitFileBasedRepository : IShortVisitRepository
     )
     {
         var tryCount = 1;
-        while (true)
+        string file = null!;
+
+        var retryOptions = new RetryStrategyOptions
         {
-            var file = Path.Combine(_options.Location!, $"{entity.ShortId}-{entity.VisitedAt.ToUnixTimeSeconds()}-{tryCount}.json");
-            try
-            {
-                await AddCoreAsync(entity, file, c);
-                break;
-            }
-            catch (IOException) when (File.Exists(file))
-            {
-                ++tryCount;
-            }
-        }
+            ShouldHandle = new PredicateBuilder().Handle<IOException>(_ => File.Exists(file)),
+            BackoffType = DelayBackoffType.Exponential,
+            UseJitter = true,
+            Delay = TimeSpan.FromMilliseconds(1),
+            OnRetry = _ => { ++tryCount; return ValueTask.CompletedTask; }
+        };
+
+        var resiliencePipeline = new ResiliencePipelineBuilder()
+            .AddRetry(retryOptions)
+            .AddTimeout(TimeSpan.FromSeconds(10))
+            .Build();
+
+        await resiliencePipeline.ExecuteAsync(async _ =>
+        {
+            file = Path.Combine(_options.Location!, $"{entity.ShortId}-{entity.VisitedAt.ToUnixTimeSeconds()}-{tryCount}.json");
+            await AddCoreAsync(entity, file, c);
+        });
     }
 
     private async Task AddCoreAsync(
