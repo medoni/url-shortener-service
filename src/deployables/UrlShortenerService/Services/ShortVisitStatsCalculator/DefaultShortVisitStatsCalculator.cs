@@ -10,9 +10,18 @@ public class DefaultShortVisitStatsCalculator : IShortVisitStatsCalculator
         IEnumerable<ShortClassifiedVisit> visits
     )
     {
+        var classifiedItems = visits
+            .SelectMany(x => x.Items)
+            .GroupBy(x => (Type: x.Type, Value: x.Value))
+            .ToDictionary(
+                k => k.Key,
+                v => v.LongCount()
+            );
+
         return new ShortVisitsStats(
             shortId,
-            visits.LongCount()
+            visits.LongCount(),
+            classifiedItems
         );
     }
 }

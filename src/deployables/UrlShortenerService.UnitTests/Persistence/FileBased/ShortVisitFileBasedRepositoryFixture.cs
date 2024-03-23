@@ -69,7 +69,11 @@ public class ShortVisitFileBasedRepositoryTests
             "UserAgent 2"
         ), visitCount: 2);
 
-        var calculatedStats = new ShortVisitsStats(shortId, 2);
+        var calculatedStats = new ShortVisitsStats(
+            shortId,
+            2,
+            new()
+        );
         StatsCalculator
             .Setup(x => x.Calculate(shortId, It.IsAny<IEnumerable<ShortClassifiedVisit>>()))
             .Returns(calculatedStats);

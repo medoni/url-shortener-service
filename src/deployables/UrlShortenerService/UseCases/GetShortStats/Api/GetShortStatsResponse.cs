@@ -1,20 +1,10 @@
-﻿using UrlShortenerService.Domain.ShortStat;
+﻿using UrlShortenerService.UseCases.GetShortStats.Api.Dtos;
 
 namespace UrlShortenerService.UseCases.GetShortStats.Api;
 
 public record GetShortStatsResponse(
     Guid Id,
     long VisitTotalCount,
-    long Visit24Hours
-)
-{
-    public GetShortStatsResponse(
-        ShortVisitEntity entity
-    ) : this(
-        entity.Id,
-        0,
-        0
-    )
-    {
-    }
-}
+    long Visit24Hours,
+    List<ClassifiedVisitItemDto> ClassifiedItems
+);

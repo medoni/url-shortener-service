@@ -6,6 +6,8 @@ public class DefaultShortVisitClassifier : IShortVisitClassifier
 {
     public ShortClassifiedVisit Classify(ShortVisitEntity visit)
     {
-        return new ShortClassifiedVisit();
+        return new ShortClassifiedVisit(
+            new List<ClassifiedItem>()
+        );
     }
 }

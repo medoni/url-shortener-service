@@ -1,5 +1,5 @@
 ﻿namespace UrlShortenerService.Services.ShortVisitClassifier;
 
-public record ShortClassifiedVisit
-{
-}
+public record ShortClassifiedVisit(
+    IReadOnlyList<ClassifiedItem> Items
+);

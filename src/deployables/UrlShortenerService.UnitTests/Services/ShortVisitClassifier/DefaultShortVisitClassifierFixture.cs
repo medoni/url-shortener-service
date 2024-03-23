@@ -34,7 +34,8 @@ public class DefaultShortVisitClassifierFixture
         // assert
         Assert.That(
             result,
-            Is.EqualTo(new ShortClassifiedVisit())
+            Is.Not.Null
+                .And.Property(nameof(result.Items)).Empty
         );
     }
 }
