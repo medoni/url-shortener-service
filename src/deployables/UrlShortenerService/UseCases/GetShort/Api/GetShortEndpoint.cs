@@ -45,7 +45,6 @@ public class GetShortEndpoint : Endpoint<GetShortRequest, GetShortResponse>
         });
     }
 
-    // todo: unit tests
     public override async Task HandleAsync(GetShortRequest shortRequest, CancellationToken ct)
     {
         var entity = await _shortRepository.GetByIdAsync(shortRequest.Id);

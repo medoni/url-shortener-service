@@ -33,7 +33,6 @@ public class CreateShortEndpoint : Endpoint<CreateShortRequestDto, CreateShortRe
         });
     }
 
-    // todo: unit tests
     public override async Task HandleAsync(CreateShortRequestDto req, CancellationToken ct)
     {
         var entity = new ShortAggregate(
