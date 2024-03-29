@@ -56,8 +56,9 @@ public class ShortFileBasedRepository : IShortRepository
             using var fs = File.Open(file, FileMode.CreateNew);
             await JsonSerializer.SerializeAsync(fs, state, cancellationToken: c);
         }
-        catch (IOException ex) when (ex.HResult == 42) // TODO:
+        catch (IOException ex) when (File.Exists(file))
         {
+            _logger.LogTrace(ex, "Can not adding short. The file '{file}' already exists.", file);
             throw new AggregateStillExistsException(typeof(ShortAggregate), aggregate.Id);
         }
     }

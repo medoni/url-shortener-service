@@ -4,7 +4,6 @@ using UrlShortenerService.Persistence;
 using UrlShortenerService.Persistence.FileBased;
 using UrlShortenerService.Services.ShortVisitClassifier;
 using UrlShortenerService.Services.ShortVisitStatsCalculator;
-using UrlShortenerService.UseCases;
 
 namespace UrlShortenerService;
 
@@ -26,13 +25,12 @@ public class Program
             .AddShortsPersistence(
                 opt => opt.AddFileBased(fileBasedOpt => builder.Configuration.Bind("UrlShortenerService:Persistence:Shorts:FileBasedPersistence", fileBasedOpt))
             )
-            .AddShortStatsPersistence(
+            .AddShortVisistsPersistence(
                 opt => opt.AddFileBased(fileBasedOpt => builder.Configuration.Bind("UrlShortenerService:Persistence:ShortVisits:FileBasedPersistence", fileBasedOpt))
             );
 
         builder.Services
             .AddFastEndpoints()
-            .AddUseCases()
             .AddShortVisitClassifier()
             .AddShortVisitStatsCalculator()
         ;

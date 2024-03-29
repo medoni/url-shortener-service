@@ -18,12 +18,12 @@ public static class PersistenceBootstrapper
         return services;
     }
 
-    public static IServiceCollection AddShortStatsPersistence(
+    public static IServiceCollection AddShortVisistsPersistence(
         this IServiceCollection services,
         Action<IShortVisitsPersistenceOptionsBuilder> optionsBuilder
     )
     {
-        var statOptionsBuilder = new ShortStatsPersistenceOptionsBuilder(
+        var statOptionsBuilder = new ShortVisitsPersistenceOptionsBuilder(
             services
         );
 
@@ -44,13 +44,13 @@ public static class PersistenceBootstrapper
         }
     }
 
-    private class ShortStatsPersistenceOptionsBuilder : IShortVisitsPersistenceOptionsBuilder
+    private class ShortVisitsPersistenceOptionsBuilder : IShortVisitsPersistenceOptionsBuilder
     {
         private readonly IServiceCollection _services;
 
         public IServiceCollection Services => _services;
 
-        public ShortStatsPersistenceOptionsBuilder(IServiceCollection services)
+        public ShortVisitsPersistenceOptionsBuilder(IServiceCollection services)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
         }
