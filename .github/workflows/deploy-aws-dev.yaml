@@ -1,9 +1,6 @@
 name: Deployment Url-Shortener-Service on dev@aws
 
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
     branches:
       - master
