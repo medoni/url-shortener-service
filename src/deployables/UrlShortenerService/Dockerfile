@@ -1,9 +1,10 @@
 # build context /src
 
 # dotnet sdk build layer
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
+COPY deployables/Directory.Build.props ./deployables/
 COPY deployables/UrlShortenerService.sln ./deployables/
 COPY deployables/UrlShortenerService/UrlShortenerService.csproj ./deployables/UrlShortenerService/
 RUN dotnet restore deployables/UrlShortenerService/UrlShortenerService.csproj
@@ -13,7 +14,7 @@ RUN dotnet publish deployables/UrlShortenerService/UrlShortenerService.csproj -c
 
 
 # dotnet runtime layer
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
 RUN apt-get update \
     && apt-get install -y curl
