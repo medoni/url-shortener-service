@@ -19,12 +19,4 @@ public record ShortAggregateState
         Description = description;
         RedirectTo = redirectTo;
     }
-
-    [Obsolete("Deserialization only")]
-    public ShortAggregateState()
-    {
-        Title = null!;
-        Description = null!;
-        RedirectTo = null!;
-    }
 }

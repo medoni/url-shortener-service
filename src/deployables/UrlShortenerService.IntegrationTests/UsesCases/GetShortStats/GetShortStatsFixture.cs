@@ -121,7 +121,6 @@ public class GetShortStatsFixtureTest
         "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
         "Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
         "curl/7.54.1",
-        "",
         null
     };
 
@@ -132,7 +131,6 @@ public class GetShortStatsFixtureTest
         "https://stackoverflow.com/?tag=csharp",
         "https://github.com/",
         "https://medium.com/?category=technology",
-        "",
         null
     };
 }

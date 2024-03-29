@@ -1,7 +1,7 @@
 ﻿namespace UrlShortenerService.Domain;
 
 public interface IAggregateRootWithPersistenceState<TAggregateState> : IAggregateRoot
-where TAggregateState : class, new()
+where TAggregateState : class
 {
     TAggregateState Persistence { get; }
 }
